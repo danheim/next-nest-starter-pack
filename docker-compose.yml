@@ -11,14 +11,33 @@ services:
     image: website_api:latest
     command: npm run start:debug
     ports:
-      - 3000:3000
-      - 9229:9229
+      - "3000:3000"
+      - "9229:9229"
     networks:
       - website-network
     volumes:
       - ./api:/usr/src/api
       - /usr/src/api/node_modules
-    restart: unless-stopped
+    restart: always
+
+  client:
+    container_name: website_client
+    build:
+      context: ./client
+      target: development
+      args:
+        - NODE_ENV=${NODE_ENV}
+    image: website_client:latest
+    command: npm run dev
+    ports:
+      - "4000:4000"
+    networks:
+      - website-network
+    volumes:
+      - ./client:/usr/src/client
+      - /usr/src/client/node_modules
+    restart: always
+
 
 networks:
   website-network:
