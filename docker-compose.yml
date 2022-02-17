@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: website_api
+    build:
+      context: ./api
+      target: development
+      args:
+        - NODE_ENV=${NODE_ENV}
+    image: website_api:latest
+    command: npm run start:debug
+    ports:
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - website-network
+    volumes:
+      - ./api:/usr/src/api
+      - /usr/src/api/node_modules
+    restart: unless-stopped
+
+networks:
+  website-network:
