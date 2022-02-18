@@ -20,7 +20,7 @@ export class AppController {
       };
     }
 
-    const data = this.appService.getHello();
+    const data = await this.appService.getHello();
 
     await this.cacheManager.set('hello', data);
 

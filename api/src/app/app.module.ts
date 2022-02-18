@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppResolver } from './app.resolver';
 import type { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
+import { PrismaModule } from 'nestjs-prisma';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import * as redisStore from 'cache-manager-redis-store';
         port: 6379,
       }),
     }),
+    PrismaModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
