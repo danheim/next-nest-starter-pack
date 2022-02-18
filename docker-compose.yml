@@ -1,6 +1,13 @@
 version: "3.8"
 
 services:
+  redis:
+    container_name: website_redis
+    networks:
+      - website-network
+    image: redis:alpine
+    ports:
+      - "6379:6379"
   api:
     container_name: website_api
     build:
@@ -9,12 +16,14 @@ services:
       args:
         - NODE_ENV=${NODE_ENV}
     image: website_api:latest
-    command: npm run start:debug
+    command: npm run start:dev
     ports:
       - "3000:3000"
       - "9229:9229"
     networks:
       - website-network
+    depends_on:
+      - redis
     volumes:
       - ./api:/usr/src/api
       - /usr/src/api/node_modules
@@ -43,3 +52,4 @@ services:
 
 networks:
   website-network:
+    name: website-network

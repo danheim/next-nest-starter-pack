@@ -12,5 +12,4 @@ remove:
 build:
 	NODE_ENV=$(NODE_ENV) docker-compose build --no-cache $(s)
 
-rebuild:
-	remove build
+rebuild: remove build
