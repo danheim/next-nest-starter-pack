@@ -10,18 +10,23 @@ export class AppController {
   ) {}
 
   @Get()
-  async getHello(): Promise<string> {
-    const value = await this.cacheManager.get<string | undefined>('hello');
-    console.log('value is:', value);
+  async getHello() {
+    const cacheData = await this.cacheManager.get<string | undefined>('hello');
 
-    if (value) {
-      return value;
+    if (cacheData) {
+      return {
+        data: cacheData,
+        source: 'redis cache',
+      };
     }
 
     const data = this.appService.getHello();
 
     await this.cacheManager.set('hello', data);
 
-    return data;
+    return {
+      data,
+      source: 'service',
+    };
   }
 }
